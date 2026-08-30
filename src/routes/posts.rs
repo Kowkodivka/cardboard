@@ -73,7 +73,13 @@ async fn create_reply(
         .await?
         .ok_or(AppError::NotFound("parent post not found"))?;
 
-    let author_tripcode = generate_tripcode(&state.db_conn, parent.board_id, addr.ip()).await?;
+    let author_tripcode = generate_tripcode(
+        &state.db_conn,
+        &state.daily_salt_cache,
+        parent.board_id,
+        addr.ip(),
+    )
+    .await?;
 
     let reply = posts::ActiveModel {
         id: Set(Uuid::new_v4()),

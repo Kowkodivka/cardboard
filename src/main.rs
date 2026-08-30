@@ -12,7 +12,7 @@ use sea_orm::Database;
 use tokio::net::TcpListener;
 use tracing_subscriber::EnvFilter;
 
-use crate::state::AppState;
+use crate::{state::AppState, utils::tripcode::DailySaltCache};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -26,8 +26,10 @@ async fn main() -> anyhow::Result<()> {
     let db_conn = Database::connect(db_url).await?;
     Migrator::up(&db_conn, None).await?;
 
-    let state = AppState { db_conn };
-    let app = routes::router().with_state(state);
+    let app = routes::router().with_state(AppState {
+        db_conn,
+        daily_salt_cache: DailySaltCache::new(),
+    });
 
     let addr = env::var("CARDBOARD_ADDR")?;
     let listener = TcpListener::bind(&addr).await?;

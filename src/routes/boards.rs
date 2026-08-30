@@ -137,7 +137,8 @@ async fn create_post(
     ConnectInfo(addr): ConnectInfo<SocketAddr>,
     Garde(Json(payload)): Garde<Json<CreatePostRequest>>,
 ) -> AppResult<Json<PostResponse>> {
-    let author_tripcode = generate_tripcode(&state.db_conn, board_id, addr.ip()).await?;
+    let author_tripcode =
+        generate_tripcode(&state.db_conn, &state.daily_salt_cache, board_id, addr.ip()).await?;
 
     let post = posts::ActiveModel {
         id: Set(Uuid::new_v4()),
