@@ -15,6 +15,7 @@ impl MigrationTrait for Migration {
                     .col(string_len("slug", 32).unique_key())
                     .col(string_len("name", 64))
                     .col(string_len_null("description", 2_000))
+                    .col(big_integer("thread_limit").default(100))
                     .col(timestamp_with_time_zone("created_at").default(Expr::current_timestamp()))
                     .col(binary_len("salt", 16))
                     .to_owned(),

@@ -11,6 +11,7 @@ pub struct Model {
     pub slug: String,
     pub name: String,
     pub description: Option<String>,
+    pub thread_limit: i64,
     pub created_at: DateTimeWithTimeZone,
     #[sea_orm(column_type = "VarBinary(StringLen::None)")]
     pub salt: Vec<u8>,

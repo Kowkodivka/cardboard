@@ -6,8 +6,10 @@ use axum::{
 };
 use axum_valid::Garde;
 use chrono::{DateTime, FixedOffset, Utc};
+use migration::{BinOper, Expr};
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set,
+    ActiveModelTrait, ColumnTrait, DatabaseTransaction, EntityTrait, ExprTrait, PaginatorTrait,
+    QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
 };
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -126,7 +128,7 @@ async fn list_top_level(
     Path(board_id): Path<Uuid>,
     Query(query): Query<ListTopLevelQuery>,
 ) -> AppResult<Json<Vec<PostResponse>>> {
-    let limit = query.limit.min(100);
+    let limit = std::cmp::min(query.limit, 100);
 
     let mut select = Posts::find()
         .filter(posts::Column::BoardId.eq(board_id))
@@ -163,13 +165,15 @@ async fn create_post(
     ConnectInfo(addr): ConnectInfo<SocketAddr>,
     Garde(Json(payload)): Garde<Json<CreatePostRequest>>,
 ) -> AppResult<Json<PostResponse>> {
-    Boards::find_by_id(board_id)
+    let board = Boards::find_by_id(board_id)
         .one(&state.db_conn)
         .await?
         .ok_or(AppError::NotFound("board not found"))?;
 
     let author_tripcode =
         generate_tripcode(&state.db_conn, &state.daily_salt_cache, board_id, addr.ip()).await?;
+
+    let txn = state.db_conn.begin().await?;
 
     let post_id = Uuid::new_v4();
 
@@ -184,7 +188,53 @@ async fn create_post(
         ..Default::default()
     };
 
-    let post = post.insert(&state.db_conn).await?;
+    let post = post.insert(&txn).await?;
+
+    prune_excess_threads(&txn, board_id, board.thread_limit).await?;
+
+    txn.commit().await?;
 
     Ok(Json(post.into()))
+}
+
+async fn prune_excess_threads(
+    txn: &DatabaseTransaction,
+    board_id: Uuid,
+    limit: i64,
+) -> AppResult<()> {
+    let thread_count = Posts::find()
+        .filter(posts::Column::BoardId.eq(board_id))
+        .filter(
+            Expr::col(posts::Column::Id)
+                .binary(BinOper::Equal, Expr::col(posts::Column::RootPostId)),
+        )
+        .count(txn)
+        .await? as i64;
+
+    if thread_count <= limit {
+        return Ok(());
+    }
+
+    let excess = thread_count - limit;
+
+    let stale_threads = Posts::find()
+        .filter(posts::Column::BoardId.eq(board_id))
+        .filter(Expr::col(posts::Column::Id).eq(Expr::col(posts::Column::RootPostId)))
+        .order_by_asc(posts::Column::LastBumpedAt)
+        .limit(excess as u64)
+        .all(txn)
+        .await?;
+
+    let stale_ids: Vec<Uuid> = stale_threads.iter().map(|t| t.id).collect();
+
+    if stale_ids.is_empty() {
+        return Ok(());
+    }
+
+    Posts::delete_many()
+        .filter(posts::Column::RootPostId.is_in(stale_ids))
+        .exec(txn)
+        .await?;
+
+    Ok(())
 }
