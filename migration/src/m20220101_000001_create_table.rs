@@ -40,11 +40,13 @@ impl MigrationTrait for Migration {
                     .if_not_exists()
                     .col(pk_uuid("id"))
                     .col(uuid("board_id"))
+                    .col(uuid("root_post_id"))
                     .col(uuid_null("parent_post_id"))
                     .col(string_len("author_tripcode", 16))
                     .col(text("content"))
                     .col(integer("reply_count").default(0))
                     .col(timestamp_with_time_zone("created_at").default(Expr::current_timestamp()))
+                    .col(timestamp_with_time_zone_null("last_bumped_at"))
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk_posts_board_id")
@@ -88,6 +90,17 @@ impl MigrationTrait for Migration {
                 Index::create()
                     .name("idx_posts_created_at")
                     .table("posts")
+                    .col("created_at")
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_posts_root_created")
+                    .table("posts")
+                    .col("root_post_id")
                     .col("created_at")
                     .to_owned(),
             )

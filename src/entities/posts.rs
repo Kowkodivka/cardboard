@@ -8,12 +8,14 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
     pub board_id: Uuid,
+    pub root_post_id: Uuid,
     pub parent_post_id: Option<Uuid>,
     pub author_tripcode: String,
     #[sea_orm(column_type = "Text")]
     pub content: String,
     pub reply_count: i32,
     pub created_at: DateTimeWithTimeZone,
+    pub last_bumped_at: Option<DateTimeWithTimeZone>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

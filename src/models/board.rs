@@ -1,3 +1,4 @@
+use chrono::{DateTime, FixedOffset};
 use garde::Validate;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -11,6 +12,7 @@ pub struct BoardResponse {
     pub slug: String,
     pub name: String,
     pub description: Option<String>,
+    pub created_at: DateTime<FixedOffset>,
 }
 
 impl From<boards::Model> for BoardResponse {
@@ -20,6 +22,7 @@ impl From<boards::Model> for BoardResponse {
             slug: m.slug,
             name: m.name,
             description: m.description,
+            created_at: m.created_at,
         }
     }
 }
