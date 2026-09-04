@@ -1,29 +1,63 @@
 import { Title } from "@solidjs/meta";
-import Counter from "../components/Counter";
-import logo from "../logo.svg";
+import { For } from "solid-js";
+
+const boards = [
+  { tag: "/b/", name: "разное", desc: "обо всём и ни о чём", count: 1204 },
+  { tag: "/pr/", name: "программирование", desc: "код, языки, инструменты", count: 318 },
+  { tag: "/sci/", name: "наука", desc: "физика, математика, данные", count: 96 },
+  { tag: "/vg/", name: "игры", desc: "разработка и моддинг", count: 241 },
+];
 
 export default function Home() {
   return (
-    <main class="px-4 py-12">
-      <Title>Home - Solid App</Title>
-      <img
-        src={logo}
-        class="pointer-events-none mx-auto h-[24vmin] animate-[spin_20s_linear_infinite]"
-        alt="Solid logo"
-      />
-      <h1 class="my-4 text-4xl font-bold">Hello Solid!</h1>
-      <Counter />
-      <p class="my-4">
-        Edit <code>src/routes/index.tsx</code> and save to reload.
-      </p>
-      <a
-        class="font-semibold text-sky-700 underline decoration-sky-400 decoration-2 underline-offset-4 transition-colors hover:text-sky-900 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-600"
-        href="https://v2.solidjs.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn Solid
-      </a>
-    </main>
+    <>
+      <Title>Cardboard</Title>
+      <main class="min-h-screen bg-base-100">
+        <div class="max-w-2xl mx-auto px-4 py-10">
+          <header class="flex items-baseline justify-between border-b border-neutral pb-4 mb-6">
+            <span class="text-accent text-lg">
+              cardboard<span class="text-base-content/40">://</span>
+            </span>
+            <nav class="flex gap-4 text-xs text-base-content/60">
+              <a href="/" class="text-accent">
+                все доски
+              </a>
+              <a href="/rules" class="hover:text-accent">
+                правила
+              </a>
+              <a href="/faq" class="hover:text-accent">
+                faq
+              </a>
+            </nav>
+          </header>
+
+          <p class="text-xs text-base-content/40 mb-2 ml-0.5">доски</p>
+
+          <div class="border border-neutral">
+            <For each={boards}>
+              {(board) => (
+                <a
+                  href={`/${board.tag.replace(/\//g, "")}`}
+                  class="grid grid-cols-[64px_1fr_auto] gap-3 items-baseline px-4 py-2.5 border-b border-neutral last:border-b-0 hover:bg-base-200 transition-colors"
+                >
+                  <span class="text-accent">{board.tag}</span>
+                  <span class="text-base-content">
+                    {board.name} <span class="text-xs text-base-content/40">— {board.desc}</span>
+                  </span>
+                  <span class="text-xs text-base-content/40 whitespace-nowrap">
+                    {board.count} тредов
+                  </span>
+                </a>
+              )}
+            </For>
+          </div>
+
+          <footer class="mt-10 pt-3 border-t border-neutral flex justify-between text-xs text-base-content/40">
+            <span>от kowkodivka</span>
+            <span>сделано с любовью</span>
+          </footer>
+        </div>
+      </main>
+    </>
   );
 }

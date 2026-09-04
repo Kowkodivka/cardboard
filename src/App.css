@@ -1,1 +1,53 @@
 @import "tailwindcss";
+
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/700.css";
+
+@plugin "daisyui" {
+  themes: false;
+}
+
+@plugin "daisyui/theme" {
+  name: "cardboard";
+  default: true;
+  prefersdark: true;
+  color-scheme: dark;
+  --color-base-100: #0d0f0d;
+  --color-base-200: #141614;
+  --color-base-300: #1a1d1a;
+  --color-base-content: #c9d1c9;
+  --color-primary: #7fb069;
+  --color-primary-content: #0d0f0d;
+  --color-secondary: #4f7a41;
+  --color-secondary-content: #0d0f0d;
+  --color-accent: #e8a33d;
+  --color-accent-content: #2c1d05;
+  --color-neutral: #33372f;
+  --color-neutral-content: #c9d1c9;
+  --color-info: #6fa3c9;
+  --color-info-content: #06131c;
+  --color-success: #7fb069;
+  --color-success-content: #0d0f0d;
+  --color-warning: #e8a33d;
+  --color-warning-content: #2c1d05;
+  --color-error: #c96f6f;
+  --color-error-content: #1c0606;
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@theme {
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: "JetBrains Mono", ui-monospace, monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+}
