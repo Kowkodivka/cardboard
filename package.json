@@ -1,0 +1,34 @@
+{
+  "name": "cardboard",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "lint": "oxlint src",
+    "fmt": "oxfmt"
+  },
+  "dependencies": {
+    "@solidjs/meta": "^1.0.0-next.2",
+    "@solidjs/router": "^2.0.0-next.21",
+    "@solidjs/web": "^2.0.0-rc.6",
+    "solid-js": "^2.0.0-rc.6"
+  },
+  "devDependencies": {
+    "@solidjs/diagnostics": "^2.0.0-rc.6",
+    "@solidjs/testing-library": "^1.0.0-beta.2",
+    "@solidjs/vite-plugin": "^3.0.0-next.38",
+    "@tailwindcss/vite": "^4.1.13",
+    "@testing-library/jest-dom": "^6.6.3",
+    "eslint-plugin-solid": "~0.17.0",
+    "filesystem-routing": "0.2.1",
+    "jsdom": "^25.0.1",
+    "oxfmt": "^0.66.0",
+    "oxlint": "~1.79.0",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.9.2",
+    "vite": "^8.1.5"
+  }
+}

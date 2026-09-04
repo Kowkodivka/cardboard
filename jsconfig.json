@@ -1,0 +1,7 @@
+{
+  "include": ["src/**/*", ".solid/**/*"],
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "@solidjs/web"
+  }
+}
