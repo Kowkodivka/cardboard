@@ -4,6 +4,6 @@
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
   "[javascript][typescript][javascriptreact][typescriptreact]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode" // или нужный id расширения oxfmt/oxc
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   }
 }
