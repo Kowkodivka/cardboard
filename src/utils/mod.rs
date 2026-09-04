@@ -1,1 +1,1 @@
-pub mod tripcode;
+pub mod salt;

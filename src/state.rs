@@ -1,7 +1,7 @@
 use axum::extract::FromRef;
 use sea_orm::DatabaseConnection;
 
-use crate::utils::tripcode::DailySaltCache;
+use crate::utils::salt::DailySaltCache;
 
 #[derive(Clone)]
 pub struct AppState {

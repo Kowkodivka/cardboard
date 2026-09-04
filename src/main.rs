@@ -12,7 +12,7 @@ use sea_orm::Database;
 use tokio::net::TcpListener;
 use tracing_subscriber::EnvFilter;
 
-use crate::{state::AppState, utils::tripcode::DailySaltCache};
+use crate::{state::AppState, utils::salt::DailySaltCache};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

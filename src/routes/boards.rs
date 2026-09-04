@@ -21,7 +21,7 @@ use crate::{
     error::{AppError, AppResult},
     models::{BoardResponse, CreateBoardRequest, CreatePostRequest, PostResponse},
     state::AppState,
-    utils::tripcode::{generate_salt, generate_tripcode},
+    utils::salt::{generate_salt, generate_tripcode},
 };
 
 pub fn router() -> OpenApiRouter<AppState> {

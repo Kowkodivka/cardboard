@@ -20,7 +20,7 @@ use crate::{
     error::{AppError, AppResult},
     models::{CreatePostRequest, PostResponse},
     state::AppState,
-    utils::tripcode::generate_tripcode,
+    utils::salt::generate_tripcode,
 };
 
 pub fn router() -> OpenApiRouter<AppState> {
