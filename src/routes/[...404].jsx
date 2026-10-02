@@ -1,5 +1,4 @@
 import { Title } from "@solidjs/meta";
-
 import { httpStatus } from "@solidjs/web";
 
 export const route = {
@@ -10,16 +9,18 @@ export default function NotFound() {
   return (
     <>
       <Title>Not Found</Title>
-      <main class="min-h-screen bg-base-100 flex items-center justify-center px-4">
-        <div class="w-full max-w-md border border-neutral">
-          <div class="px-5 py-8 text-center">
-            <p class="text-3xl text-accent mb-2">404</p>
-            <p class="text-base-content mb-1">страница не найдена</p>
-            <p class="text-xs text-base-content/50">возможно, её удалили или адрес неверный</p>
+      <main class="min-h-dvh bg-base-100 flex items-center justify-center px-6 py-8">
+        <div class="w-full max-w-md border border-neutral bg-base-200">
+          <div class="px-6 py-8 text-left">
+            <p class="text-5xl font-bold text-error mb-2 tracking-tight">404</p>
+            <p class="text-sm font-medium mb-1.5">страница не найдена</p>
+            <p class="text-[11px] leading-relaxed text-base-content/60">
+              возможно ее удалили или адрес неверный
+            </p>
           </div>
 
-          <div class="px-5 py-4 border-t border-neutral flex items-center justify-end">
-            <a href="/" class="btn btn-outline btn-primary btn-sm">
+          <div class="flex items-center justify-start border-t border-neutral p-3">
+            <a href="/" class="btn btn-primary btn-sm px-6">
               на главную
             </a>
           </div>

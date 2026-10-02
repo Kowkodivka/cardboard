@@ -1,7 +1,7 @@
 import { Title } from "@solidjs/meta";
 import { Loading } from "solid-js";
-import { Router } from "./router";
-import "./App.css";
+import { Router } from "@/router";
+import "@/App.css";
 
 export default function App() {
   return (
@@ -9,7 +9,15 @@ export default function App() {
       {(props) => (
         <>
           <Title>Cardboard</Title>
-          <Loading fallback={<main class="px-4 py-12">Loading…</main>}>{props.children}</Loading>
+          <Loading
+            fallback={
+              <main class="flex items-center justify-center min-h-screen px-4 py-12">
+                <span class="loading loading-spinner loading-lg"></span>
+              </main>
+            }
+          >
+            {props.children}
+          </Loading>
         </>
       )}
     </Router>

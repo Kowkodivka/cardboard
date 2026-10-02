@@ -1,0 +1,10 @@
+.git
+node_modules
+target
+dist
+.solid
+.vscode
+.idea
+.env
+.env.example
+*.md
